@@ -1,0 +1,15 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="cn.chengwenjun.dressgudie.MainActivity">
+    <item
+        android:id="@+id/it_login"
+        android:orderInCategory="100"
+        android:title="登陆"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/it_register"
+        android:orderInCategory="100"
+        android:title="注册"
+        app:showAsAction="never" />
+</menu>
