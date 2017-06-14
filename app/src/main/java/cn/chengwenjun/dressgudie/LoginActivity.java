@@ -3,6 +3,7 @@ package cn.chengwenjun.dressgudie;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -57,10 +58,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     private User user;
     private UserDao userDao;
+
+    private Intent intent;
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
-    private UserLoginTask mAuthTask = null;
+    //private UserLoginTask mAuthTask = null;
 
     // UI references.
     private AutoCompleteTextView mEmailView;
@@ -151,9 +154,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * errors are presented and no actual login attempt is made.
      */
     private void attemptLogin() {
-        if (mAuthTask != null) {
-            return;
-        }
+//        if (mAuthTask != null) {
+//            return;
+//        }
 
         // Reset errors.
         mEmailView.setError(null);
@@ -192,8 +195,27 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);//显示进度条
-            mAuthTask = new UserLoginTask(email, password);
-            mAuthTask.execute((Void) null);
+            userDao = new UserDao(this);
+            user = userDao.queryByEmail(email);
+            if (user == null) {
+                mEmailView.setError(getString(R.string.error_unregister_email));
+                focusView = mEmailView;
+                focusView.requestFocus();
+
+            } else if (!password.equals(user.getPassword())) {
+                mPasswordView.setError(getString(R.string.error_incorrect_password));
+                focusView = mPasswordView;
+                focusView.requestFocus();
+            } else {
+                //Toast.makeText(getApplicationContext(), "ceshi", Toast.LENGTH_LONG).show();
+                intent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+            showProgress(false);
+
+
+//            mAuthTask = new UserLoginTask(email, password);
+//            mAuthTask.execute((Void) null);
         }
     }
 
@@ -315,18 +337,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
 
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
             //判断邮箱和密码
             // todo:换成数据库链接
-            user = userDao.queryByEmail(mEmail);
-            if (user == null) {
-                Toast.makeText(getApplicationContext(), "该用户不存在", Toast.LENGTH_LONG).show();
-            }
+
 
 //            for (String credential : DUMMY_CREDENTIALS) {
 //                String[] pieces = credential.split(":");
@@ -337,12 +350,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 //            }
 
             // TODO: register the new account here.
+            //return true;
             return mPassword.equals(user.getPassword());
         }
 
         @Override
         protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
+            //mAuthTask = null;
             showProgress(false);
 
             if (success) {
@@ -355,7 +369,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         @Override
         protected void onCancelled() {
-            mAuthTask = null;
+            // mAuthTask = null;
             showProgress(false);
         }
     }
