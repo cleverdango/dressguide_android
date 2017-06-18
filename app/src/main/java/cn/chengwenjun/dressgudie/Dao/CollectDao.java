@@ -27,6 +27,7 @@ public class CollectDao {
         values.put("top",collect.getTop());
         values.put("middle",collect.getMiddle());
         values.put("bottom",collect.getBottom());
+        values.put("email",collect.getEmail());
         return values;
     }
     public Collect queryByEmail(String email) {

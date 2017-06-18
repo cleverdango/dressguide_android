@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
                     collect.setTop(topViewPager.getCurrentItem());
                     collect.setMiddle(mainViewPager.getCurrentItem());
                     collect.setBottom(bottomViewPager.getCurrentItem());
-                    collect.setEmail(sp.getString("email", ""));
+                    collect.setEmail(new String(sp.getString("email", "")));
                     collectDao.insert(collect);
                     //collectList.add(collect);
 
