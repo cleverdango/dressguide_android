@@ -1,5 +1,6 @@
 package cn.chengwenjun.dressgudie;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -39,27 +40,48 @@ public class RegisterActivity extends AppCompatActivity {
         bt_register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //username = et_register_username.getText().toString().trim();
+
                 email = et_register_email.getText().toString().trim();
                 password = et_register_password.getText().toString();
                 String reiviewStr = et_register_review.getText().toString();
                 String username = et_register_username.getText().toString();
 
-                if (userDao.queryByEmail(email) != null) {
-                    Toast.makeText(getApplicationContext(), "该邮箱已被注册", Toast.LENGTH_LONG).show();
-                } else if (email.length() == 0) {
-                    Toast.makeText(getApplicationContext(), "邮箱不能为空", Toast.LENGTH_LONG).show();
-                } else if (password.length() == 0) {
-                    Toast.makeText(getApplicationContext(), "密码不能为空", Toast.LENGTH_LONG).show();
-                } else if (!password.equals(reiviewStr)) {
-                    Toast.makeText(getApplicationContext(), "两次密码不一致，请重试", Toast.LENGTH_LONG).show();
-                } else {
-                    //firstr 为性别 newstr为hobby
-                    userDao.insert(new User(email, password, username));
-                    finish();
+                boolean cancel = false;
+                View focusView = null;
+                et_register_email.setError(null);
+                et_register_password.setError(null);
+                et_register_review.setError(null);
 
+                if (userDao.queryByEmail(email) != null) {
+                    et_register_email.setError(getString(R.string.error_registered_email));
+                    focusView = et_register_email;
+                    cancel = true;
+                } else if (email.length() == 0) {
+                    et_register_email.setError(getString(R.string.error_field_required));
+                    focusView = et_register_email;
+                    cancel = true;
+
+                } else if (!email.contains("@")) {
+                    et_register_email.setError(getString(R.string.error_invalid_email));
+                    focusView = et_register_email;
+                    cancel = true;
+                } else if (password.length() == 0) {
+                    et_register_password.setError(getString(R.string.error_field_required));
+                    focusView = et_register_password;
+                    cancel = true;
+                } else if (!password.equals(reiviewStr)) {
+                    et_register_review.setError(getString(R.string.error_differet_password));
+                    focusView = et_register_review;
+                    cancel = true;
                 }
 
+                if (cancel) {
+                    focusView.requestFocus();
+                } else {
+                    userDao.insert(new User(email, password, username));
+                    Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                }
             }
         });
         bt_cannel.setOnClickListener(new View.OnClickListener() {

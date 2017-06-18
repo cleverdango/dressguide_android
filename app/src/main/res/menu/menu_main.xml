@@ -5,8 +5,7 @@
     <item
         android:id="@+id/it_login"
         android:orderInCategory="100"
-        android:title="登陆"
-        app:showAsAction="never" />
+        android:title="登陆" />
     <item
         android:id="@+id/it_register"
         android:orderInCategory="100"

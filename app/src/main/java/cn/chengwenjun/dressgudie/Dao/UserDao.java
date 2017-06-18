@@ -16,19 +16,20 @@ import cn.chengwenjun.dressgudie.bean.User;
  */
 
 public class UserDao {
-    private MyHelper myHelper;
+    public static final String TABLE_NAME = "user_info";
+    private MyUserHelper myHelper;
     private SQLiteDatabase db;
     private User user;
 
     public UserDao(Context context) {//todo:Context是什么意思
-        myHelper = new MyHelper(context);
+        myHelper = new MyUserHelper(context);
     }
 
     public long insert(User user) {
         db = myHelper.getWritableDatabase();
         ContentValues values = getContentValues(user);
 
-        long rowId = db.insert("user_info", null, values);
+        long rowId = db.insert(TABLE_NAME, null, values);
         db.close();
         return rowId;
     }
@@ -36,25 +37,22 @@ public class UserDao {
     @NonNull
     private ContentValues getContentValues(User user) {
         ContentValues values = new ContentValues();
-
-        values.put("userId",user.getUserId());
         values.put("email",user.getEmail());
         values.put("password", user.getPassword());
         values.put("name", user.getName());
-
         return values;
     }
 
     public List<User> queryAll() {
         db = myHelper.getReadableDatabase();
         List<User> userList = new ArrayList<User>();
-        Cursor cursor = db.query("user_info", null, null, null, null, null, null, null);
+        Cursor cursor = db.query(TABLE_NAME, null, null, null, null, null, null, null);
         while (cursor.moveToNext()) {
-            Integer useId = cursor.getInt(1);
-            String email = cursor.getString(2);
-            String password = cursor.getString(3);
-            String name = cursor.getString(4);
-            user = new User();
+            Integer useId = cursor.getInt(0);
+            String email = cursor.getString(1);
+            String password = cursor.getString(2);
+            String name = cursor.getString(3);
+            user = new User(useId,email,password,name);
             userList.add(user);
         }
         cursor.close();
@@ -64,13 +62,12 @@ public class UserDao {
 
     public User queryByEmail(String email) {
         db = myHelper.getReadableDatabase();
-        List<User> userList = new ArrayList<User>();
-        Cursor cursor = db.query("user_info", null, "email =?", new String[]{email}, null, null, null);
+
+        Cursor cursor = db.query(TABLE_NAME, null, "email =?", new String[]{email}, null, null, null);
         if (cursor.moveToNext()) {
-            Integer useId = cursor.getInt(1);
-            //String email = cursor.getString(2);
-            String password = cursor.getString(3);
-            String name = cursor.getString(4);
+            Integer useId = cursor.getInt(0);
+            String password = cursor.getString(2);
+            String name = cursor.getString(3);
 
             user = new User(useId,email,password,name);
 
@@ -82,11 +79,11 @@ public class UserDao {
     public User queryById(int userId) {
         db = myHelper.getReadableDatabase();
         List<User> userList = new ArrayList<User>();
-        Cursor cursor = db.query("user_info", null, "userId =?", new String[]{String.valueOf(userId)},null,null,null);
+        Cursor cursor = db.query(TABLE_NAME, null, "userId =?", new String[]{String.valueOf(userId)},null,null,null);
         if (cursor.moveToNext()) {
-            String email = cursor.getString(2);
-            String password = cursor.getString(3);
-            String name = cursor.getString(4);
+            String email = cursor.getString(1);
+            String password = cursor.getString(2);
+            String name = cursor.getString(3);
             user = new User(userId,email,password,name);
         }
         cursor.close();
@@ -94,10 +91,11 @@ public class UserDao {
         return user;
     }
 
-    public int delete(String name) {
+    public int delete(String email) {
         db = myHelper.getReadableDatabase();
         ContentValues values = new ContentValues();
-        int count = db.delete("user_info", "name = ?", new String[]{name});
+        int count = db.delete(TABLE_NAME, "email = ?", new String[]{email});
+        //todo:似乎有点问题
         db.close();
         return count;
     }
@@ -105,7 +103,7 @@ public class UserDao {
     public int update(User user) {
         db = myHelper.getWritableDatabase();
         ContentValues values = getContentValues(user);
-        int count = db.update("user_info", values, "name = ?", new String[]{user.getName()});
+        int count = db.update(TABLE_NAME, values, "email = ?", new String[]{user.getEmail()});
         db.close();
         return count;
     }

@@ -27,7 +27,8 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <LinearLayout
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraint"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="?attr/actionBarSize"
@@ -35,9 +36,51 @@
         android:orientation="vertical">
 
         <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="2">
+            android:id="@+id/layoutTop"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="24dp"
+            app:layout_constraintDimensionRatio="h,1080:614"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                app:srcCompat="@mipmap/ic_left" />
+
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/cn_top"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                app:layout_constraintDimensionRatio="h,1:0.5"
+
+                tools:layout_editor_absoluteX="8dp" />
+
+            <ImageView
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignRight="@id/cn_top"
+                android:layout_centerVertical="true"
+                app:srcCompat="@mipmap/ic_right" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativeMiddle"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintDimensionRatio="h,1080:454"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layoutTop">
 
             <ImageView
                 android:id="@+id/imageView2"
@@ -47,60 +90,40 @@
                 app:srcCompat="@mipmap/ic_left" />
 
             <android.support.v4.view.ViewPager
-                android:id="@+id/cn_top"
+                android:id="@+id/cn_main"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            </android.support.v4.view.ViewPager>
 
             <ImageView
                 android:id="@+id/imageView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignRight="@id/cn_top"
-                android:layout_centerVertical="true"
-                app:srcCompat="@mipmap/ic_right" />
-        </RelativeLayout>
-
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="2.5">
-
-            <ImageView
-
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                app:srcCompat="@mipmap/ic_left" />
-
-
-            <android.support.v4.view.ViewPager
-                android:id="@+id/cn_main"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1.06"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-            </android.support.v4.view.ViewPager>
-
-            <ImageView
-
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:layout_alignRight="@id/cn_main"
                 android:layout_centerVertical="true"
+                android:layout_marginBottom="16dp"
                 app:srcCompat="@mipmap/ic_right" />
 
         </RelativeLayout>
 
+
         <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="3">
+            android:id="@+id/relativeBottom"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="0dp"
+            android:layout_weight="3"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/relativeMiddle"
+            app:layout_constraintVertical_bias="1.0">
 
             <ImageView
-
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -108,11 +131,11 @@
 
 
             <android.support.v4.view.ViewPager
-                android:id="@+id/cn_buttom"
+                android:id="@+id/cn_bottom"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1.06"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                app:layout_constraintDimensionRatio="h,337:403">
 
             </android.support.v4.view.ViewPager>
 
@@ -120,15 +143,21 @@
 
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignRight="@id/cn_buttom"
+                android:layout_alignRight="@id/cn_bottom"
                 android:layout_centerVertical="true"
                 app:srcCompat="@mipmap/ic_right" />
 
         </RelativeLayout>
 
 
+    </android.support.constraint.ConstraintLayout>
 
-    </LinearLayout>
-
-
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        app:backgroundTint="@color/zhihu_orange"
+        app:srcCompat="@mipmap/ic_add" />
 </android.support.design.widget.CoordinatorLayout>

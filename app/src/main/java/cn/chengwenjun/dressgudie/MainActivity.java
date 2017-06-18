@@ -1,6 +1,9 @@
 package cn.chengwenjun.dressgudie;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -14,14 +17,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.facebook.stetho.Stetho;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import cn.chengwenjun.dressgudie.Dao.CollectDao;
 import cn.chengwenjun.dressgudie.bean.*;
 
 public class MainActivity extends AppCompatActivity {
@@ -36,22 +39,25 @@ public class MainActivity extends AppCompatActivity {
      */
     private SectionsPagerAdapter topSectionsPagerAdapter;
     private SectionsPagerAdapter mainSectionsPagerAdapter;
-    private SectionsPagerAdapter buttomSectionsPagerAdapter;
+    private SectionsPagerAdapter bottomSectionsPagerAdapter;
     /**
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager topViewPager;
-
     private ViewPager mainViewPager;
-
-    private ViewPager buttomViewPager;
+    private ViewPager bottomViewPager;
 
     Intent intent;
+    protected static final String PREFS_NAME = "myPrefsFile";
+    private SharedPreferences sp;
+    private boolean remeberUser;
+    private CollectDao collectDao;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Stetho.initializeWithDefaults(this);
         setContentView(R.layout.activity_main);
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -59,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         // primary sections of the activity.
         topSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), Dress.getAllTop());
         mainSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), Dress.getAllMiddle());
-        buttomSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), Dress.getAllButtom());
+        bottomSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), Dress.getAllBottom());
         // Set up the ViewPager with the sections adapter.
         topViewPager = (ViewPager) findViewById(R.id.cn_top);
         topViewPager.setAdapter(topSectionsPagerAdapter);
@@ -68,15 +74,50 @@ public class MainActivity extends AppCompatActivity {
         mainViewPager = (ViewPager) findViewById(R.id.cn_main);
         mainViewPager.setAdapter(mainSectionsPagerAdapter);
 
-        buttomViewPager = (ViewPager) findViewById(R.id.cn_buttom);
-        buttomViewPager.setAdapter(buttomSectionsPagerAdapter);
+
+        bottomViewPager = (ViewPager) findViewById(R.id.cn_bottom);
+        bottomViewPager.setAdapter(bottomSectionsPagerAdapter);
+
+        collectDao = new CollectDao(this);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sp = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+                remeberUser = sp.getBoolean("remeber", false);
+                if (remeberUser) {
+                    //todo:添加收藏的功能
+                    Collect collect = new Collect();
+                    List<Collect> collectList = new ArrayList<Collect>();
+                    collect.setTop(topViewPager.getCurrentItem());
+                    collect.setMiddle(mainViewPager.getCurrentItem());
+                    collect.setBottom(bottomViewPager.getCurrentItem());
+                    collect.setEmail(sp.getString("email", ""));
+                    collectDao.insert(collect);
+                    //collectList.add(collect);
+
+                    Snackbar.make(view, "添加收藏成功，请到我的收藏中查找", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                } else {
+                    Snackbar.make(view, "请先登录", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+
+                }
+            }
+        });
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        sp = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        remeberUser = sp.getBoolean("remeber", false);
+        if (remeberUser) {
+            getMenuInflater().inflate(R.menu.menu_logined, menu);
+        } else {
+            getMenuInflater().inflate(R.menu.menu_main, menu);
+        }
         return true;
     }
 
@@ -97,6 +138,24 @@ public class MainActivity extends AppCompatActivity {
                 intent = new Intent(MainActivity.this, RegisterActivity.class);
                 startActivity(intent);
                 break;
+            case R.id.it_exit:
+                //退出登陆
+                sp = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+                SharedPreferences.Editor editor = sp.edit();
+                editor.putString("email", "");
+                editor.putString("password", "");
+                editor.putBoolean("remeber", false);
+                editor.commit();
+                finish();
+                break;
+            case R.id.it_userInfo:
+                intent = new Intent(MainActivity.this, UserInfoActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.it_collectInfo:
+                intent = new Intent(MainActivity.this, CollectInfoActivity.class);
+                startActivity(intent);
+                break;
             default:
                 break;
         }
@@ -113,8 +172,7 @@ public class MainActivity extends AppCompatActivity {
          * fragment.
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
-        //private int resourceId = 0;
-        //private ArrayList<Dress> dressList;
+
         private Dress dress;
 
         public PlaceholderFragment() {
@@ -126,7 +184,6 @@ public class MainActivity extends AppCompatActivity {
          */
         public static PlaceholderFragment newInstance(Dress dress) {
             PlaceholderFragment fragment = new PlaceholderFragment();
-
             fragment.dress = dress;
             return fragment;
         }
@@ -137,14 +194,12 @@ public class MainActivity extends AppCompatActivity {
 
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);//inflater用这个来把xml的内容转成view
             // 获取文字部分
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(dress.title);
-            textView.setText(getString(R.string.section_format, dress.title));
+//            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
+//            textView.setText(dress.title);
+//            textView.setText(getString(R.string.section_format, dress.title));
             //获取图片部分
             ImageView iv_main = (ImageView) rootView.findViewById(R.id.iv_main);
             iv_main.setImageResource(dress.resourceId);
-
-
             return rootView;
         }
     }
@@ -177,18 +232,6 @@ public class MainActivity extends AppCompatActivity {
             return dressList.size();
         }
 
-//        @Override
-//        public CharSequence getPageTitle(int position) {
-//            switch (position) {
-//                case 0:
-//                    return "水手服";
-//                case 1:
-//                    return "西式马甲";
-//                case 2:
-//                    return "测试";
-//            }
-//            return null;
-//        }
 
     }
 }

@@ -9,8 +9,8 @@ import android.util.Log;
  * Created by yazawanico on 2017/6/13.
  */
 
-public class MyHelper extends SQLiteOpenHelper {
-    public MyHelper(Context context){
+public class MyUserHelper extends SQLiteOpenHelper {
+    public MyUserHelper(Context context){
         super(context,"user.db",null,1);
     }
 

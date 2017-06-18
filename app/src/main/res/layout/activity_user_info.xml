@@ -1,19 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center_horizontal"
-    android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="cn.chengwenjun.dressgudie.LoginActivity">
-
+    android:layout_height="match_parent">
     <!-- Login progress -->
     <ProgressBar
-        android:id="@+id/login_progress"
+        android:id="@+id/register_progress"
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -21,7 +13,7 @@
         android:visibility="gone" />
 
     <ScrollView
-        android:id="@+id/login_form"
+        android:id="@+id/register_form"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -35,12 +27,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <AutoCompleteTextView
-                    android:id="@+id/email"
+                <EditText
+                    android:id="@+id/et_update_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:editable="false"
+                    android:focusable="false"
                     android:hint="@string/prompt_email"
-                    android:inputType="textEmailAddress"
+                    android:inputType="none"
                     android:maxLines="1"
                     android:singleLine="true" />
 
@@ -51,16 +45,18 @@
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/password"
+                    android:id="@+id/et_update_username"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/prompt_password"
-                    android:imeActionId="@+id/login"
-                    android:imeActionLabel="@string/action_sign_in_short"
+                    android:hint="@string/prompt_username"
+                    android:imeActionId="@+id/register"
+                    android:imeActionLabel="@string/action_register"
                     android:imeOptions="actionUnspecified"
-                    android:inputType="textPassword"
+                    android:inputType="textPersonName"
                     android:maxLines="1"
-                    android:singleLine="true" />
+                    android:singleLine="true"
+                  />
+
 
             </android.support.design.widget.TextInputLayout>
 
@@ -69,27 +65,25 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <CheckBox
-                    android:id="@+id/cb_remeber"
-
+                <Button
+                    android:id="@+id/bt_user_update"
                     style="?android:textAppearanceSmall"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:elevation="1dp"
-                    android:text="@string/action_remeber_acc"
-                    android:textStyle="bold"
-                     />
+                    android:layout_marginTop="16dp"
+                    android:text="@string/action_update"
+                    android:textStyle="bold" />
 
                 <Button
-                    android:id="@+id/email_sign_in_button"
+                    android:id="@+id/bt_cancel_update"
                     style="?android:textAppearanceSmall"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/action_sign_in"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/action_cancel"
                     android:textStyle="bold" />
 
             </LinearLayout>
-
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
