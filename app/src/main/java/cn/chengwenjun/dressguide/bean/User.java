@@ -1,4 +1,4 @@
-package cn.chengwenjun.dressgudie.bean;
+package cn.chengwenjun.dressguide.bean;
 
 /**
  * Created by yazawanico on 2017/6/13.

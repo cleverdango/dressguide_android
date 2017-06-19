@@ -1,4 +1,4 @@
-package cn.chengwenjun.dressgudie;
+package cn.chengwenjun.dressguide;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

@@ -1,4 +1,4 @@
-package cn.chengwenjun.dressgudie;
+package cn.chengwenjun.dressguide;
 
 import org.junit.Test;
 

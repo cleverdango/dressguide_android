@@ -1,12 +1,11 @@
-package cn.chengwenjun.dressgudie.Dao;
+package cn.chengwenjun.dressguide.Dao;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.v7.widget.AppCompatImageView;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
-import cn.chengwenjun.dressgudie.R;
+import cn.chengwenjun.dressguide.R;
 
 
 /**

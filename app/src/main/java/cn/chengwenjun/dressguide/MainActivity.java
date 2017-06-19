@@ -1,4 +1,4 @@
-package cn.chengwenjun.dressgudie;
+package cn.chengwenjun.dressguide;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -22,10 +22,9 @@ import android.widget.ImageView;
 import com.facebook.stetho.Stetho;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import cn.chengwenjun.dressgudie.Dao.CollectDao;
-import cn.chengwenjun.dressgudie.bean.*;
+import cn.chengwenjun.dressguide.Dao.CollectDao;
+import cn.chengwenjun.dressguide.bean.*;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -52,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences sp;
     private boolean remeberUser;
     private CollectDao collectDao;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,16 +86,12 @@ public class MainActivity extends AppCompatActivity {
                 sp = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
                 remeberUser = sp.getBoolean("remeber", false);
                 if (remeberUser) {
-                    //todo:添加收藏的功能
                     Collect collect = new Collect();
-                    List<Collect> collectList = new ArrayList<Collect>();
                     collect.setTop(topViewPager.getCurrentItem());
                     collect.setMiddle(mainViewPager.getCurrentItem());
                     collect.setBottom(bottomViewPager.getCurrentItem());
                     collect.setEmail(new String(sp.getString("email", "")));
                     collectDao.insert(collect);
-                    //collectList.add(collect);
-
                     Snackbar.make(view, "添加收藏成功，请到我的收藏中查找", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                 } else {
@@ -153,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 break;
             case R.id.it_collectInfo:
-                intent = new Intent(MainActivity.this, CollectInfoActivity.class);
+                intent = new Intent(MainActivity.this, MyCollectActivity.class);
                 startActivity(intent);
                 break;
             default:
@@ -171,13 +167,10 @@ public class MainActivity extends AppCompatActivity {
          * The fragment argument representing the section number for this
          * fragment.
          */
-        private static final String ARG_SECTION_NUMBER = "section_number";
-
         private Dress dress;
 
         public PlaceholderFragment() {
         }
-
         /**
          * Returns a new instance of this fragment for the given section
          * number.

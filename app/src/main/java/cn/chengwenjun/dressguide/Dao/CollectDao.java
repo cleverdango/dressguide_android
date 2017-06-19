@@ -1,12 +1,13 @@
-package cn.chengwenjun.dressgudie.Dao;
+package cn.chengwenjun.dressguide.Dao;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import cn.chengwenjun.dressgudie.bean.Collect;
-import cn.chengwenjun.dressgudie.bean.User;
+import java.util.ArrayList;
+
+import cn.chengwenjun.dressguide.bean.Collect;
 
 /**
  * Created by yazawanico on 2017/6/16.
@@ -30,20 +31,7 @@ public class CollectDao {
         values.put("email",collect.getEmail());
         return values;
     }
-    public Collect queryByEmail(String email) {
-        db = myHelper.getReadableDatabase();
 
-        Cursor cursor = db.query(TABLE_NAME, null, "email =?", new String[]{email}, null, null, null);
-        if (cursor.moveToNext()) {
-            Integer top = cursor.getInt(1);
-            Integer middle = cursor.getInt(2);
-            Integer bottom = cursor.getInt(3);
-            collect =  new Collect(top,middle,bottom,email);
-        }
-        cursor.close();
-        db.close();
-        return collect;
-    }
     public long insert(Collect collect){
         db = myHelper.getWritableDatabase();
         ContentValues values = getContentValues(collect);
@@ -51,5 +39,36 @@ public class CollectDao {
         db.close();
         return rowId;
     }
+    public Collect queryByEmail(String email) {
+        db = myHelper.getReadableDatabase();
+
+        Cursor cursor = db.query(TABLE_NAME, null, "email =?", new String[]{email}, null, null, null);
+        if (cursor.moveToNext()) {
+            Integer top = cursor.getInt(2);
+            Integer middle = cursor.getInt(3);
+            Integer bottom = cursor.getInt(4);
+            collect =  new Collect(top,middle,bottom,email);
+        }
+        cursor.close();
+        db.close();
+        return collect;
+    }
+    public ArrayList<Collect> queryAllByEmail(String email) {
+        db = myHelper.getReadableDatabase();
+        ArrayList<Collect> collectList = new ArrayList<Collect>();
+
+        Cursor cursor = db.query(TABLE_NAME, null, "email =?", new String[]{email}, null, null, null);
+        while (cursor.moveToNext()) {
+            Integer top = cursor.getInt(2);
+            Integer middle = cursor.getInt(3);
+            Integer bottom = cursor.getInt(4);
+            collect =  new Collect(top,middle,bottom,email);
+            collectList.add(collect);
+        }
+        cursor.close();
+        db.close();
+        return collectList;
+    }
+
 
 }

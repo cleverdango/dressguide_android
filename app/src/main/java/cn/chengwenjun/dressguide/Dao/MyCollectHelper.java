@@ -1,4 +1,4 @@
-package cn.chengwenjun.dressgudie.Dao;
+package cn.chengwenjun.dressguide.Dao;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -16,10 +16,11 @@ public class MyCollectHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table collect_info( email text primary key," +
-                "top text," +
-                "middle text," +
-                "bottom text)"
+        db.execSQL("create table collect_info( collectId integer primary key autoincrement, " +
+                "email text ," +
+                "top text ," +
+                "middle text ," +
+                "bottom text )"
         );
 
 

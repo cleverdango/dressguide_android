@@ -1,8 +1,8 @@
-package cn.chengwenjun.dressgudie.bean;
+package cn.chengwenjun.dressguide.bean;
 
 import java.util.ArrayList;
 
-import cn.chengwenjun.dressgudie.R;
+import cn.chengwenjun.dressguide.R;
 
 /**
  * Created by yazawanico on 2017/6/11.
@@ -11,6 +11,9 @@ import cn.chengwenjun.dressgudie.R;
 public class Dress {
     public String title;
     public int resourceId;
+
+    public Dress() {
+    }
 
     public Dress(String title, int resourceId) {
         this.title = title;

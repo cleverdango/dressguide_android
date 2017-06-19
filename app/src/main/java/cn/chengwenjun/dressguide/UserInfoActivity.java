@@ -1,4 +1,4 @@
-package cn.chengwenjun.dressgudie;
+package cn.chengwenjun.dressguide;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,8 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import cn.chengwenjun.dressgudie.Dao.UserDao;
-import cn.chengwenjun.dressgudie.bean.User;
+import cn.chengwenjun.dressguide.Dao.UserDao;
+import cn.chengwenjun.dressguide.bean.User;
 
 public class UserInfoActivity extends AppCompatActivity {
     User user;

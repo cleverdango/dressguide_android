@@ -1,4 +1,4 @@
-package cn.chengwenjun.dressgudie.Dao;
+package cn.chengwenjun.dressguide.Dao;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

@@ -1,4 +1,4 @@
-package cn.chengwenjun.dressgudie;
+package cn.chengwenjun.dressguide;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -14,7 +14,6 @@ import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.AsyncTask;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -30,13 +29,12 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.chengwenjun.dressgudie.Dao.UserDao;
-import cn.chengwenjun.dressgudie.bean.User;
+import cn.chengwenjun.dressguide.Dao.UserDao;
+import cn.chengwenjun.dressguide.bean.User;
 
 import static android.Manifest.permission.READ_CONTACTS;
 

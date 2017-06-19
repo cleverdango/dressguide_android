@@ -1,4 +1,4 @@
-package cn.chengwenjun.dressgudie.Dao;
+package cn.chengwenjun.dressguide.Dao;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -9,7 +9,7 @@ import android.support.annotation.NonNull;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.chengwenjun.dressgudie.bean.User;
+import cn.chengwenjun.dressguide.bean.User;
 
 /**
  * Created by yazawanico on 2017/6/13.
