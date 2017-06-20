@@ -21,7 +21,7 @@ public class UserDao {
     private SQLiteDatabase db;
     private User user;
 
-    public UserDao(Context context) {//todo:Context是什么意思
+    public UserDao(Context context) {
         myHelper = new MyUserHelper(context);
     }
 
@@ -95,7 +95,6 @@ public class UserDao {
         db = myHelper.getReadableDatabase();
         ContentValues values = new ContentValues();
         int count = db.delete(TABLE_NAME, "email = ?", new String[]{email});
-        //todo:似乎有点问题
         db.close();
         return count;
     }
